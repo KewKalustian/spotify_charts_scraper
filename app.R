@@ -100,7 +100,7 @@ Imp <- function() {
     br(),
     a(
       href = c("https://developer.spotify.com/"),
-      img(src = "https://raw.githubusercontent.com/KewKalustian/Shiny_Spotify_Charts_Scraper/main/img/Spotify_Logo_CMYK_White.png",
+      img(src = "https://raw.githubusercontent.com/KewKalustian/spotify_charts_scraper/master/img/Spotify_Logo_CMYK_White.png",
           width = "50%"),
       target = "_blank"
     ),
@@ -108,7 +108,7 @@ Imp <- function() {
     a(
       href = c("http://music-psychology.org/index.html"),
       img(
-        src = "https://raw.githubusercontent.com/KewKalustian/Shiny_Spotify_Charts_Scraper/main/img/dgmwhite.png",
+        src = "https://raw.githubusercontent.com/KewKalustian/spotify_charts_scraper/master/img/dgmwhite.png",
         width = 84,
         height = 42,
         style = "object-position: center"
@@ -121,7 +121,7 @@ Imp <- function() {
     hr(),
     a(
       href = c("https://www.aesthetics.mpg.de/en.html"),
-      img(src = "https://raw.githubusercontent.com/KewKalustian/Shiny_Spotify_Charts_Scraper/main/img/190814-MPIEA-Logo-E-XS-L-WHITE-digital.png",
+      img(src = "https://raw.githubusercontent.com/KewKalustian/spotify_charts_scraper/master/img/190814-MPIEA-Logo-E-XS-L-WHITE-digital.png",
           width = "75%"),
       target = "_blank"
     )
