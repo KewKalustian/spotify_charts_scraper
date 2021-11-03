@@ -11,4 +11,6 @@ How it works:
 
 https://user-images.githubusercontent.com/56342591/140029573-b70cd914-ef08-4f1e-afdd-0f57ac79e0a5.mp4
 
+This app will be continously updated. So, stay tuned for further updates!
 
+If you want to contribute, please feel free to do pull requests.
