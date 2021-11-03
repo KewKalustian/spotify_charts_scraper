@@ -5,3 +5,10 @@ Music streaming is an essential part of everyday music listening. Accessing data
 The app is now deployed on the online testing server of the German Society for Music Psychology:
 
 http://testing.musikpsychologie.de/spotify_charts_scraper/
+
+
+How it works:
+
+https://user-images.githubusercontent.com/56342591/140029573-b70cd914-ef08-4f1e-afdd-0f57ac79e0a5.mp4
+
+
