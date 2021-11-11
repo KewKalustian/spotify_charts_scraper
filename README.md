@@ -23,7 +23,7 @@ In this vein, feel also free to do pull requests.
 
 ## How to cite
 
-If you end up using data retrieved with this app in your research project, please cite this app by using the provided Concept DOI or the respective specific DOI of the version you are using.
+If you end up using data retrieved with this app in your research project, please cite this app by using the provided Concept DOI or the respective DOI of the specific version you are using.
 
 For example for the current version:
 
