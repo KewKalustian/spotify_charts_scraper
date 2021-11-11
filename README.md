@@ -1,4 +1,4 @@
-# Spotify Charts Scraper – A Shiny App 
+# Spotify Charts Scraper – A Shiny App to Retrieve Daily Top 200 Spotify Charts with Audio Features in Real-Time
 
 [![DOI](https://zenodo.org/badge/410547939.svg)](https://zenodo.org/badge/latestdoi/410547939)
 
