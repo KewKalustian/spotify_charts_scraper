@@ -25,6 +25,6 @@ In this vein, feel also free to do pull requests.
 
 If you end up using data retrieved with this app in your research project, please cite this app by using the provided Concept DOI or the respective specific DOI of the version you are using.
 
-For example:
+For example for the current version:
 
 Kalustian, K. (2021). *Spotify Charts Scraper. A Shiny App to Retrieve Daily Top 200 Spotify Charts with Audio Features in Real-Time (v0.2.5).* Zenodo. https://doi.org/10.5281/zenodo.5675872
