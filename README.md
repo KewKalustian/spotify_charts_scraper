@@ -1,4 +1,6 @@
-# Spotify Charts Scraper – A Shiny App
+# Spotify Charts Scraper – A Shiny App 
+
+[![DOI](https://zenodo.org/badge/410547939.svg)](https://zenodo.org/badge/latestdoi/410547939)
 
 Music streaming is an essential part of everyday music listening. Accessing data from music streaming service providers is often challenging. Making that kind of data retrieval more accessible, I developed an open-source web app that dynamically retrieves all available daily top 200 Spotify charts of each country and each date with audio features for each song in real-time. Hence, large datasets are retrievable and downloadable as a CSV file with only a few clicks so that further analyses with any statistical computing software are possible. Since this new app facilitates music streaming research substantially, I am excited to share this app with the community.
 
@@ -14,3 +16,5 @@ https://user-images.githubusercontent.com/56342591/140029573-b70cd914-ef08-4f1e-
 This app will continously be updated. So, stay tuned for further updates!
 
 If you want to contribute, please feel free to do pull requests.
+
+Once you end up using data retrieved with this app, please cite this app by using the provided DOI.
