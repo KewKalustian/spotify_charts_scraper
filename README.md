@@ -9,12 +9,18 @@ The app is now deployed on the online testing server of the German Society for M
 http://testing.musikpsychologie.de/spotify_charts_scraper/
 
 
-How it works:
+## How it works
+
+To get a visual impression of how the app actually works, watch the following demo video:  
 
 https://user-images.githubusercontent.com/56342591/140029573-b70cd914-ef08-4f1e-afdd-0f57ac79e0a5.mp4
 
-This app will continously be updated. So, stay tuned for further updates!
 
-If you want to contribute, please feel free to do pull requests.
+## Future directions
 
-Once you end up using data retrieved with this app, please cite this app by using the provided DOI.
+This app will continously be updated. Soon an update will be released with major performance improvements. So stay tuned for further updates! 
+In this vein, feel also free to do pull requests.
+
+## How to cite
+
+If you end up using data retrieved with this app in your research project, please cite this app by using the provided Concept DOI or the respective specific DOI of the version you are using.
