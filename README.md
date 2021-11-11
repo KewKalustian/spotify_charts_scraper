@@ -18,7 +18,7 @@ https://user-images.githubusercontent.com/56342591/140029573-b70cd914-ef08-4f1e-
 
 ## Future directions
 
-This app will continously be updated. Soon an update will be released with major performance improvements. So stay tuned for further updates! 
+This app will continously be updated. Soon an update will be released with major performance improvements. So stay tuned! 
 In this vein, feel also free to do pull requests.
 
 ## How to cite
