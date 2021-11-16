@@ -1,7 +1,9 @@
 # NOT RUN w/out credentials:
 
-# v0.2.5
-# login/logout page, performance and general improvements
+# v0.2.6
+# stability, performance improvements (see spotifyR_scrapeR(), 
+# sprintf() vs. paste0(), full_join vs. merge()), and other enhancements
+# (HTML/CSS).
 
 library(shiny)
 library(shinydashboard)   
@@ -53,7 +55,7 @@ add_session_to_db <- function(user, sessionid, conn = db) {
   tibble(user = user,
          sessionid = sessionid,
          login_time = as.character(now())) %>%
-    dbWriteTable(conn, "sessions", ., append = TRUE)
+    dbWriteTable(conn, "sessions", ., append = T)
 }
 
 db <- dbConnect(SQLite(), ":memory:")
@@ -65,22 +67,15 @@ dbCreateTable(db,
                 login_time = "TEXT"
               ))
 
-
-
 #############################
 ### for server deployment ###
 #############################
 
-
-# Stored encrypted elsewhere because of privacy reasons.
-# However, users may want to create their own user_base.
-
-user_base <- readRDS("user_base.rds")
+user_base <- read_csv("user_base.csv")
 
 #####################
 ####### U I #########
 #####################
-
 
 
 Imp <- function() {
@@ -146,7 +141,7 @@ header <- dashboardHeader(
   
   tags$li(
     class = "dropdown",
-    style = "padding: 8px;",
+    style = "padding: 8px",
     shinyauthr::logoutUI("logout")
   )
 )
@@ -305,28 +300,38 @@ body <-  dashboardBody(
            font-size: 22px}
            .skin-blue .main-header .logo {
            background-color:#283747}
+           
            /* logo when hovered */
            .skin-blue .main-header .logo:hover {
            background-color: #283747}
+           
            /* rest */
            .skin-blue .main-header .navbar-static-top {
            background-color: #283747}
+           
            /* main sidebar */
            .skin-blue .main-sidebar {
            background-color: #283747}
+           
            /* links + when links hovered*/
            a {color: #F47920}
            a:hover {color: #283747 }
+           
            /* buttons/icons + when buttons/icons hovered */
            .fa-download:hover,
            .fa-play-circle:hover ,
            .fa-info-circle:hover ,
            .fa-github:hover {color: #F47920}
+  
            #login-button {background-color: #283747; border: none}
            #login-button:hover {background-color: #F47920}
+           #logout-button {background-color: #8b0000; border: none}
+           #logout-button:hover {background-color:#6f0000}
+           
            /* github icon position */
            .fa-github {padding-top: 12px; padding-bottom: 10px;
            padding-right:10px}
+           
            /* login panel / body */
            #rmve .with-border {display:none}
            #rmve .box-body  {background-color: #283747}
@@ -405,11 +410,8 @@ body <-  dashboardBody(
       size = 0.66,
       plotOutput("plot2",  height="680px")
     )
-  )
+  ))
   
-)
-
-
 ui <- dashboardPage(header, sidebar, body)
 
 
@@ -458,7 +460,7 @@ server <- function(input, output, session) {
         "Spotify Charts Scraper",
         br(),
         p(style = "font-weight:normal; font-size: 21px; text-align: center",
-          "v0.2.5")
+          "v0.2.6")
       ),
       h2('What is the Spotify Charts Scraper?'),
       
@@ -484,7 +486,7 @@ server <- function(input, output, session) {
         a(href = "https://developer.spotify.com/",
           "API", target = "_blank"),
         "without writing hundreds of code lines.
- Retrieved data can be downloaded as a .csv file and can easily be
+ Retrieved data can be downloaded as a CSV file and can easily be
  imported into any statistical computing software—e.g.,",
         a(href = "https://jasp-stats.org/about/",
           "JASP", target = "_blank"),
@@ -522,7 +524,7 @@ facilitate access to this app—this depends ultimately on Spotify’s approval.
       ),
       br(),
       tags$blockquote(
-        h4(
+        p(
           "Special thanks to",
           a(href = "https://developer.spotify.com/", "Spotify", 
             target = "_blank"),
@@ -548,7 +550,7 @@ facilitate access to this app—this depends ultimately on Spotify’s approval.
             their server."
         )
       ),
-      h4("Please look forward to future updates and stay tuned!"),
+      p("Please look forward to future updates and stay tuned!"),
       hr(),
       h5("Recommended Browser: Google Chrome"),
       h5("Recommended Minimum Display Size: 24-inch" ),
@@ -578,7 +580,7 @@ developer—unless it is explicitly stated."
         title = h3("About"),
         style = "text-align: justify; font-size: 14pt;",
         strong("Spotify Charts Scraper"),
-        "(v0.2.5) is a",
+        "(v0.2.6) is a",
         a(href = "https://shiny.rstudio.com/", "Shiny application", 
           target = "_blank"),
         "to retrieve daily", 
@@ -597,7 +599,7 @@ computational musicology or even for cross-cultural research while
         a(href = "https://developer.spotify.com/",
           "API", target = "_blank"),
         "without writing hundreds of code lines.
- Retrieved data can be downloaded as a .csv file and can easily be
+ Retrieved data can be downloaded as a CSV file and can easily be
  imported into any statistical computing software—e.g.,",
         a(href = "https://jasp-stats.org/about/",
           "JASP", target = "_blank"),
@@ -655,7 +657,7 @@ facilitate access to this app—this depends ultimately on Spotify’s approval.
         ),
         p("Further information can be found in the modal infoboxes."),
         tags$blockquote(
-          h4(
+          p(
             "Special thanks to",
             a(href = "https://developer.spotify.com/", "Spotify", 
               target = "_blank"),
@@ -678,7 +680,7 @@ metadata by using their developer API, to",
             "who agreed to host this app on their server."
           )
         ),
-        h4("Please look forward to future updates and stay tuned!"),
+        p("Please look forward to future updates and stay tuned!"),
         hr(),
         h5("Recommended Browser: Google Chrome"),
         h5("Recommended Minimum Display Size: 24-inch" ),
@@ -764,20 +766,19 @@ developer—unless it is explicitly stated."
   
   
   observeEvent(input$Dates, {
-    if (sum(as.Date(input$Dates[2]) - as.Date(input$Dates[1])) > 7) {
+    if (sum(as.Date(input$Dates[2]) - as.Date(input$Dates[1])) > 28) {
       time <-
-        as.numeric((as.Date(input$Dates[2]) - as.Date(input$Dates[1]))) *
-        # seconds to retrieve 1 day and render plots. see MCS in the Github-repo
-        dseconds(c(5.11 , 7.12))
+        # seconds to retrieve 1 day and render plots. See MCS in the Github-repo
+        dseconds(c(1.08 , 1.51))*as.numeric((as.Date(input$Dates[2]) - as.Date(input$Dates[1]))) 
       showNotification(
         paste0(
           "That is a wider date range. The greater the selected period is,
            the more scraping and plot rendering time is needed. Based on 
            simulations, the estimated scraping and plot rendering time will 
           approximately take in total ",
-          round(as.numeric(time, "minutes")[1], 1),
+         round(as.numeric(time, "minutes")[1], 1),
           " to ",
-          round(as.numeric(time, "minutes")[2], 1),
+         round(as.numeric(time, "minutes")[2], 1),
           " minutes."
         ),
         closeButton = F,
@@ -811,7 +812,7 @@ developer—unless it is explicitly stated."
       spin = "fulfilling-bouncing-circle",
       color = "#2e4057",
       text = h3(
-        "Spotify charts are being scraped and plots are being rendered…"
+        "Spotify charts and Audio Features are being scraped…"
       )
     )
     
@@ -833,69 +834,49 @@ developer—unless it is explicitly stated."
     ##################################
     
     main = reactive({
+      
       spotifyR_scrapeR <- function(x) {
-        page <- x
         
+        page <- read_html(x)
         
         # Retrieving the 200 chart positions of each day.
-        chart_pos <- page %>%
-          read_html() %>%
-          html_nodes(".chart-table-position") %>%
-          html_text()
+        
+        chart_pos <- html_text(html_nodes(page,".chart-table-position"))
         
         #Retrieving the 200 song/track titles of each day.
         
-        title <- page %>%
-          read_html() %>%
-          html_nodes("strong") %>%
-          html_text()
+        title <- html_text(html_nodes(page,"strong"))
         
         # Retrieving the 200 artist names of each day.
         
-        artist <- page %>%
-          read_html() %>%
-          html_nodes(".chart-table-track span") %>%
-          html_text()
+        artist <- html_text(html_nodes(page,".chart-table-track span")) 
         
         # Retrieving the 200 stream counts of each day.
         
-        streams <- page %>%
-          read_html() %>%
-          html_nodes("td.chart-table-streams") %>%
-          html_text()
+        streams <- html_text(html_nodes(page,"td.chart-table-streams"))
         
         # Retrieving the dates of for each day of the period.
         
-        date <- page %>%
-          read_html() %>%
-          html_nodes(
-            ".responsive-select~ .responsive-select+
-                   .responsive-select .responsive-select-value"
-          ) %>%
-          html_text()
+        date <- html_text(html_nodes(page,
+                                     ".responsive-select~ .responsive-select+
+                   .responsive-select .responsive-select-value"))
         
         # Retrieving the track_id of for each day of the period.
         
-        track_id <- page %>%
-          read_html() %>%
-          html_nodes("a") %>%
-          html_attr("href") %>%
-          str_remove("https://open.spotify.com/track/") %>%
-          .[-c(1:6)]
-        
-        track_id <- track_id[1:(length(track_id) - 5)]
-        
+        track_id <- html_nodes(page, "a") %>%
+          html_attr("href") %>% 
+          str_remove("https://open.spotify.com/track/") %>% 
+          # only ID strings (i.e. char string with a length of 22)
+         .[which(nchar(.[1:length(.)]) == 22)]
         
         # Putting these chunks together in a table of the class.
         
-        tab <-
-          data.frame(chart_pos, title, artist, streams, date, track_id)
-        
-        tab <- na.omit(tab)
-        
+        tab <- data.frame(chart_pos, title, artist, streams, date, track_id) %>% 
+               na.omit()
         
         return(tab)
       }
+      
       
       Feat_scraper <- function(x, token) {
         options(warning = -1)
@@ -907,8 +888,7 @@ developer—unless it is explicitly stated."
         v1a <- as.character(sample(x, 100, replace = F))
         # assigning a tibble with features of those 100 IDs. This tibble will be
         # extended below.
-        tib <-
-          spotifyr::get_track_audio_features(v1a, token)
+        tib <- spotifyr::get_track_audio_features(v1a, token)
         # replacing any IDs with new ones if those IDs are already in the tibble
         if (any(x %in% tib$id) == T) {
           x = x[which(!x %in% tib$id)]
@@ -948,7 +928,7 @@ developer—unless it is explicitly stated."
               "analysis_url",
               "duration_ms",
               "time_signature"
-            )
+            ), match ="first"
           )
           # replacing any IDs with new ones if those IDs are already in the
           # tibble
@@ -996,29 +976,25 @@ developer—unless it is explicitly stated."
       set.seed(1, sample.kind = "Rounding")
       id_s <- sample(id, replace = F)
       
-      # Overcoming the obstacle that the "get_track_audio_features" function can
-      # only retrieve audio features for 100 tracks at once.
-
-      Sys.setenv(SPOTIFY_CLIENT_ID = "Enter here your ID")
       
-      # Developer secret
-      Sys.setenv(SPOTIFY_CLIENT_SECRET = "Enter here your secret")
+      # saved elsewhere
+      spotify_credentials <- read_csv("spotify_credentials.csv")
       
       # Generating an access token to use Spotify’s API
       token <-
-        get_spotify_access_token(Sys.getenv("SPOTIFY_CLIENT_ID"),
-                                 Sys.getenv("SPOTIFY_CLIENT_SECRET"))
+        get_spotify_access_token(spotify_credentials$SPOTIFY_CLIENT_ID,
+                                 spotify_credentials$SPOTIFY_CLIENT_SECRET)
       
       Feats <- Feat_scraper(id_s, token)
       Feats_id <- Feats %>%
         rename(track_id = id)
       
-      # Merging audio features and chart positions/tracks/dates 
-      Full_charts = merge(Tracks, Feats_id , by = "track_id", all = T) %>%
+      Full_charts = full_join(Tracks, Feats_id, by = "track_id", 
+                              match = "first") %>% 
         group_by(date, chart_pos) %>%
         mutate(
           chart_pos = as.integer(chart_pos),
-          # gsub: Replacing of a matching string pattern by a
+          # sub: Replacing of a matching string pattern by a
           # replacement string (i.e., we simply omit the string "by"
           # and the whitespace before the artist names).
           artist = sub("by\\s", "", artist),
@@ -1031,7 +1007,7 @@ developer—unless it is explicitly stated."
           tempo_bpm = as.integer(tempo),
           loudness_db = as.integer(loudness),
           country_or_region = as.character(country())
-        ) %>%
+        ) %>% 
         dplyr::select(-c(track_id, type, track_href, analysis_url, tempo,
                          loudness)) %>%
         arrange(date, chart_pos)
@@ -1069,6 +1045,7 @@ developer—unless it is explicitly stated."
     
     output$plot <- renderPlot({
       reactive(credentials()$user_auth)
+      
       quants <- main() %>%
         group_by(Period) %>%
         summarize(
@@ -1078,7 +1055,9 @@ developer—unless it is explicitly stated."
           Max = max(streams)
         )
       
-      p <- ggplot(main()) +
+   
+      
+      p <- ggplot(data = main()) +
         geom_histogram(
           aes(x = streams, fill = Period),
           color = "grey20",
@@ -1144,7 +1123,7 @@ developer—unless it is explicitly stated."
           data = quants,
           aes(x = Q1, y = label_pos * 0.75),
           fill = "white",
-          label = paste0("italic(Q)[1] == ", quants$Q1),
+          label = sprintf("italic(Q)[1] == %s", quants$Q1),
           parse = T
         ) +
         
@@ -1152,7 +1131,17 @@ developer—unless it is explicitly stated."
           data = quants,
           aes(x = Median, y = label_pos * 0.5),
           fill = "white",
-          label = paste0("italic(Mdn) == ", quants$Median),
+          label = sprintf("italic(Mdn) == %s", quants$Median),
+          parse = T
+        ) +
+        
+        geom_label(
+          data = quants,
+          aes(x = ((Q3-Q1)/2) + Q1, y = label_pos * 0.975),
+          alpha = 0.3,
+          fill = "darkred",
+          label = "italic(IQR)",
+          colour = "white", 
           parse = T
         ) +
         
@@ -1160,7 +1149,7 @@ developer—unless it is explicitly stated."
           data = quants,
           aes(x = Q3, y = label_pos * 0.75),
           fill = "white",
-          label = paste0("italic(Q)[3] == ", quants$Q3),
+          label = sprintf("italic(Q)[3] == %s", quants$Q3),
           parse = T
         ) +
         
@@ -1168,8 +1157,7 @@ developer—unless it is explicitly stated."
           data = quants,
           aes(x =  Max * 0.75, y = label_pos * 0.75),
           fill = "white",
-          label = paste0("italic(N)[Total] == ",
-                         nrow(main())),
+          label = sprintf("italic(N)[Total] == %s",nrow(main())),
           parse = T
         ) 
       
@@ -1222,13 +1210,6 @@ developer—unless it is explicitly stated."
     },
     execOnResize = T)
   
-    
-    # rv <- reactiveValues(download_info = 0)
-    # observeEvent(rv$download_info, {
-    # showNotification("File downloaded!", closeButton = F)
-    # }, ignoreInit = T)
-    
-    
     output$downloadData <- downloadHandler(
       
       filename = function() {
@@ -1245,7 +1226,6 @@ developer—unless it is explicitly stated."
       content = function(con) {
         
         write.csv(main()[-20], con, row.names = T)
-        # rv$download_info <- rv$download_info + 1
       }
     )
     
@@ -1260,6 +1240,7 @@ developer—unless it is explicitly stated."
 
 shinyApp(ui = ui, server = server)
 
+
 ## End(**Not run**)
 
-##############################################################################
+################################################################################
