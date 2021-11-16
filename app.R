@@ -1,7 +1,7 @@
 # NOT RUN w/out credentials:
 
 # v0.2.6
-# stability, performance improvements (see spotifyR_scrapeR(), 
+# stability and performance improvements (see spotifyR_scrapeR(), 
 # sprintf() vs. paste0(), full_join vs. merge()), and other enhancements
 # (HTML/CSS).
 
