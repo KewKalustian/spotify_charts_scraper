@@ -18,7 +18,7 @@ https://user-images.githubusercontent.com/56342591/140029573-b70cd914-ef08-4f1e-
 
 ## Future directions
 
-This app will continously be updated. Soon an update will be released with major performance improvements. So stay tuned! 
+This app will continously be updated. So stay tuned! 
 In this vein, feel also free to do pull requests.
 
 ## How to cite
@@ -27,4 +27,4 @@ If you end up using data retrieved with this app in your research project, pleas
 
 For example:
 
-Kalustian, K. (2021). *Spotify Charts Scraper. A Shiny App to Retrieve Daily Top 200 Spotify Charts with Audio Features in Real-Time (v0.2.5).* Zenodo. https://doi.org/10.5281/zenodo.5675872
+Kalustian, K. (2021). *Spotify Charts Scraper. A Shiny App to Retrieve Daily Top 200 Spotify Charts with Audio Features in Real-Time.* Zenodo. https://doi.org/10.5281/zenodo.5675871
