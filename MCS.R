@@ -1,3 +1,4 @@
+
 # Monte carlo simulation to identify the median (and its 95% CI) to be used as 
 # factor according to which the estimated scraping and rendering time
 # is calculated in the App.
@@ -36,6 +37,9 @@ time <- c(10.93,
           199.03,
           205.6,
           209.12)
+
+# Sped-up time in comparison to v0.2.5 (according to benchmark tests).
+time2 <- time*0.212293
 #########################
 ### Monte Carlo Sim. ####
 #########################
@@ -52,8 +56,8 @@ set.seed(123, sample.kind = "Rounding")
 # estimating the medians of the scraping time diffs between days.
 
 avg_diff <- replicate(b,{
- boot_time <- sample(diff(time), n-1, replace = T)
- median(boot_time)
+  boot_time <- sample(diff(time2), n-1, replace = T)
+  median(boot_time)
 })
 
 
@@ -62,3 +66,4 @@ round(quantile(avg_diff, c(.025,.975)),2)
 
 
 ##################################################################
+
