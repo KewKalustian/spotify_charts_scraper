@@ -8,6 +8,10 @@ The app is now deployed on the online testing server of the German Society for M
 
 http://testing.musikpsychologie.de/spotify_charts_scraper/
 
+Here are other great apps hosted on the DOTS:
+
+http://testing.musikpsychologie.de/dots_home/
+
 
 ## How it works
 
